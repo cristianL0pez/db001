@@ -1,32 +1,72 @@
-from fastapi import FastAPI
-from app.db import database
-from app.routes import users, posts, comments
+from fastapi import FastAPI, HTTPException, Depends
+from asyncpg import create_pool, Connection
+from pydantic import BaseModel
 
-# Crea la instancia de la aplicación FastAPI
 app = FastAPI()
 
-# Conexión a la base de datos (al iniciar la app)
+# Configura la conexión
+DATABASE_URL = "postgresql://midb_m1sa_user:JUSBmmX4XqnrniLwZLq4yrDd87KS2mBG@dpg-cu4nm8ogph6c73c1qmeg-a.oregon-postgres.render.com/midb_m1sa"
+db_pool = None
+
 @app.on_event("startup")
 async def startup():
-    # Conecta a la base de datos
-    await database.connect()
+    global db_pool
+    db_pool = await create_pool(DATABASE_URL)
 
-# Desconexión de la base de datos (al cerrar la app)
 @app.on_event("shutdown")
 async def shutdown():
-    # Desconecta de la base de datos
-    await database.disconnect()
+    await db_pool.close()
 
-# Rutas principales
-@app.get("/", tags=["Root"])
-async def read_root():
-    return {"message": "Hello, Database API"}
+# Modelo para insertar datos
+class Item(BaseModel):
+    nombre: str
+    descripcion: str
 
-# Rutas de usuarios
-app.include_router(users.router, prefix="/users", tags=["Users"])
+# Obtener todos los datos
+@app.get("/items/")
+async def get_items():
+    async with db_pool.acquire() as connection:  # Adquiere conexión del pool
+        rows = await connection.fetch("SELECT * FROM items")
+        return [dict(row) for row in rows]
 
-# Rutas de publicaciones
-app.include_router(posts.router, prefix="/posts", tags=["Posts"])
+# Obtener un dato por ID
+@app.get("/items/{item_id}")
+async def get_item(item_id: int):
+    async with db_pool.acquire() as connection:
+        row = await connection.fetchrow("SELECT * FROM items WHERE id = $1", item_id)
+        if not row:
+            raise HTTPException(status_code=404, detail="Item no encontrado")
+        return dict(row)
 
-# Rutas de comentarios
-app.include_router(comments.router, prefix="/comments", tags=["Comments"])
+# Insertar un nuevo dato
+@app.post("/items/")
+async def create_item(item: Item):
+    async with db_pool.acquire() as connection:
+        query = "INSERT INTO items (nombre, descripcion) VALUES ($1, $2) RETURNING id"
+        item_id = await connection.fetchval(query, item.nombre, item.descripcion)
+        return {"id": item_id, "nombre": item.nombre, "descripcion": item.descripcion}
+
+# Actualizar un dato
+@app.put("/items/{item_id}")
+async def update_item(item_id: int, item: Item):
+    async with db_pool.acquire() as connection:
+        query = """
+        UPDATE items
+        SET nombre = $1, descripcion = $2
+        WHERE id = $3
+        RETURNING id
+        """
+        updated_id = await connection.fetchval(query, item.nombre, item.descripcion, item_id)
+        if not updated_id:
+            raise HTTPException(status_code=404, detail="Item no encontrado")
+        return {"id": updated_id, "nombre": item.nombre, "descripcion": item.descripcion}
+
+# Eliminar un dato
+@app.delete("/items/{item_id}")
+async def delete_item(item_id: int):
+    async with db_pool.acquire() as connection:
+        query = "DELETE FROM items WHERE id = $1 RETURNING id"
+        deleted_id = await connection.fetchval(query, item_id)
+        if not deleted_id:
+            raise HTTPException(status_code=404, detail="Item no encontrado")
+        return {"detail": f"Item con id {deleted_id} eliminado exitosamente"}
