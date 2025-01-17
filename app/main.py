@@ -22,6 +22,10 @@ class Item(BaseModel):
     nombre: str
     descripcion: str
 
+class Usuario(BaseModel):
+    nombre: str
+    email: str
+
 # Obtener todos los datos
 @app.get("/items/")
 async def get_items():
@@ -70,3 +74,23 @@ async def delete_item(item_id: int):
         if not deleted_id:
             raise HTTPException(status_code=404, detail="Item no encontrado")
         return {"detail": f"Item con id {deleted_id} eliminado exitosamente"}
+
+
+
+
+
+# crud de usuarios 
+@app.get("/usuarios/")
+async def get_users():
+    async with db_pool.acquire() as connection:  # Adquiere conexión del pool
+        rows = await connection.fetch("SELECT * FROM usuarios")
+        return [dict(row) for row in rows]
+    
+
+# Insertar un nuevo dato
+@app.post("/usuarios/")
+async def create_users(user: Usuario):
+    async with db_pool.acquire() as connection:
+        query = "INSERT INTO usuarios (nombre, email) VALUES ($1, $2) RETURNING id"
+        user_id = await connection.fetchval(query, user.nombre, user.email)
+        return {"id": user_id, "nombre": user.nombre, "email": user.email}
