@@ -92,7 +92,9 @@ docker-compose up -d --build
 
 - **Tablas:**
   - `usuarios`: para gestionar los usuarios.
-  - `items`: para almacenar elementos y sus descripciones.
+  - `publicaciones`: para almacenar publicaciones.
+  - `comentarios`: para almacenar comentarios.
+  - `relaciones`: para almacenar relaciones.
 - **Backend:**
   - Conexión a PostgreSQL.
   - API funcional con endpoints para CRUD.
