@@ -43,6 +43,7 @@ class Relacion(BaseModel):
     seguido_id: int
 
 
+
 @app.get("/")
 async def welcome():
     return {"mensaje": "¡Bienvenido a mi red social!"}

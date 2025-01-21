@@ -15,17 +15,46 @@ Este es un proyecto para un curso de bases de datos que incluye la configuració
 2. **Crear las tablas necesarias en PostgreSQL**:
 
 ```sql
+-- Tabla de usuarios
 CREATE TABLE usuarios (
     id SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL
+    nombre_usuario VARCHAR(50) NOT NULL UNIQUE,
+    correo VARCHAR(100) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE items (
+-- Tabla de publicaciones
+CREATE TABLE publicaciones (
     id SERIAL PRIMARY KEY,
-    nombre VARCHAR(255) NOT NULL,
-    descripcion TEXT
+    usuario_id INT NOT NULL,
+    contenido TEXT NOT NULL,
+    fecha_publicacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE
 );
+
+-- Tabla de comentarios
+CREATE TABLE comentarios (
+    id SERIAL PRIMARY KEY,
+    publicacion_id INT NOT NULL,
+    usuario_id INT NOT NULL,
+    contenido TEXT NOT NULL,
+    fecha_comentario TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (publicacion_id) REFERENCES publicaciones (id) ON DELETE CASCADE,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios (id) ON DELETE CASCADE
+);
+
+-- Tabla de relaciones (seguimientos)
+CREATE TABLE relaciones (
+    id SERIAL PRIMARY KEY,
+    seguidor_id INT NOT NULL,
+    seguido_id INT NOT NULL,
+    fecha_seguimiento TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (seguidor_id) REFERENCES usuarios (id) ON DELETE CASCADE,
+    FOREIGN KEY (seguido_id) REFERENCES usuarios (id) ON DELETE CASCADE,
+    UNIQUE (seguidor_id, seguido_id) -- Evita duplicados
+);
+
 ```
 
 ---
@@ -33,7 +62,7 @@ CREATE TABLE items (
 ### 2. Conectar PostgreSQL al Backend
 
 1. **Configura la conexión en el archivo `main.py`**:
-   - Modifica la línea 8 para agregar la URL de la base de datos externa proporcionada por Render.
+   - Modifica la línea `DATABASE_URL` para agregar la URL de la base de datos externa proporcionada por Render.
 
 ```python
 DATABASE_URL = "aqui va el External Database URL"
@@ -72,5 +101,7 @@ docker-compose up -d --build
 
 ---
 
-¿Faltaría incluir información sobre cómo probar los endpoints del backend o algún detalle adicional? Avísame si necesitas agregar más secciones.
-
+links importantes (contenidos a revisar):
+documentacion de fastapi: "https://fastapi.tiangolo.com/"
+codelytv canal de programacion: "https://www.youtube.com/@CodelyTV"\
+curso de sql : "https://www.youtube.com/watch?v=uUdKAYl-F7g&t=1667s&ab_channel=HolaMundo"
