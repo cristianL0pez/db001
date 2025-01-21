@@ -2,7 +2,10 @@ from fastapi import FastAPI, HTTPException, Depends
 from asyncpg import create_pool, Connection
 from pydantic import BaseModel
 
+
 app = FastAPI()
+
+
 
 # Configura la conexión
 DATABASE_URL = "postgresql://midb_ff6g_user:5FebCuwKycGrfFm7NK4l7r8Um7PTfNXY@dpg-cu5bapij1k6c73er76n0-a.oregon-postgres.render.com/midb_ff6g"
@@ -37,23 +40,9 @@ class Relacion(BaseModel):
     seguido_id: int
 
 
-# Endpoints de Usuarios
-@app.get("/usuarios/")
-async def get_usuarios():
-    async with db_pool.acquire() as connection:
-        rows = await connection.fetch("SELECT * FROM usuarios")
-        return [dict(row) for row in rows]
-    
-
-
 @app.get("/")
 async def welcome():
     return {"mensaje": "¡Bienvenido a mi red social!"}
-
-
-
-
-
 
 # Endpoints de Usuarios
 @app.get("/usuarios/")
