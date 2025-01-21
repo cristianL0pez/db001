@@ -3,13 +3,16 @@ from asyncpg import create_pool, Connection
 from pydantic import BaseModel
 
 
+
 app = FastAPI()
 
 
 
+db_pool = None
+
 # Configura la conexión
 DATABASE_URL = "postgresql://midb_ff6g_user:5FebCuwKycGrfFm7NK4l7r8Um7PTfNXY@dpg-cu5bapij1k6c73er76n0-a.oregon-postgres.render.com/midb_ff6g"
-db_pool = None
+
 
 @app.on_event("startup")
 async def startup():
@@ -50,6 +53,8 @@ async def get_usuarios():
     async with db_pool.acquire() as connection:
         rows = await connection.fetch("SELECT * FROM usuarios")
         return [dict(row) for row in rows]
+
+
 
 @app.post("/usuarios/")
 async def create_usuario(usuario: Usuario):
