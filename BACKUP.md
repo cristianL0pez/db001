@@ -23,23 +23,21 @@ Asegúrate de tener instalada una versión de `pg_dump` compatible con la versi�
    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
 Importa la clave GPG del repositorio:
 
-bash
-Copy
+ ```bash
 wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
 Actualiza la lista de paquetes:
 
-bash
-Copy
+```bash
 sudo apt update
 Instala la versión 16.x del cliente de PostgreSQL:
 
-bash
-Copy
+```bash
 sudo apt install postgresql-client-16
+
 Verifica la instalación:
 
-bash
-Copy
+```bash
 pg_dump --version
 En macOS (con Homebrew)
 Instala PostgreSQL 16.x:
