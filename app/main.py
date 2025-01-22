@@ -28,6 +28,7 @@ class Usuario(BaseModel):
       nombre_usuario : str 
       correo:str
       contrasena:str
+      imagen_perfil:str
 
 class Publicacion(BaseModel):
     usuario_id: int
@@ -61,12 +62,12 @@ async def get_usuarios():
 async def create_usuario(usuario: Usuario):
     async with db_pool.acquire() as connection:
         query = """
-        INSERT INTO usuarios (nombre_usuario, correo, contrasena)
-        VALUES ($1, $2, $3)
+        INSERT INTO usuarios (nombre_usuario, correo, contrasena ,imagen_perfil)
+        VALUES ($1, $2, $3, $4)
         RETURNING id
         """
-        user_id = await connection.fetchval(query, usuario.nombre_usuario, usuario.correo, usuario.contrasena)
-        return {"id": user_id, "nombre_usuario": usuario.nombre_usuario, "correo": usuario.correo}
+        user_id = await connection.fetchval(query, usuario.nombre_usuario, usuario.correo, usuario.contrasena, usuario.imagen_perfil)
+        return {"id": user_id, "nombre_usuario": usuario.nombre_usuario, "correo": usuario.correo ,"imagen_del_perfil":usuario.imagen_perfil}
 
 # Endpoints de Publicaciones
 @app.get("/publicaciones/")
