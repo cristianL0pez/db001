@@ -68,8 +68,6 @@ CREATE TABLE relaciones (
 DATABASE_URL = "aqui va el External Database URL"
 ```
 
----
-
 ### 3. Levantar el Proyecto con Docker
 
 1. Usa el siguiente comando para construir y levantar los servicios:
@@ -77,6 +75,15 @@ DATABASE_URL = "aqui va el External Database URL"
 ```bash
 docker-compose up -d --build
 ```
+
+---
+
+---
+### 4. Entrar a docs de fast api para probar los endpoints
+
+- dentro de la url puedes entrar a tu-url/docs
+- agregar docs a la url que entrega codespaces 
+- `https://effective-sniffle-657p7gjvpj4h4vp-80.app.github.dev/`
 
 ---
 

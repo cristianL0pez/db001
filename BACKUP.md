@@ -1,3 +1,24 @@
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
+sudo apt update
+
+sudo apt install postgresql-client-16
+
+pg_dump --version
+
+chmod +x backup_postgres.sh
+
+./backup_postgres.sh
+
+
+
+
+
+
+
+
 # Backup de una base de datos PostgreSQL en la nube
 
 Este documento explica cómo realizar un backup de una base de datos PostgreSQL alojada en la nube (por ejemplo, en **Render**) utilizando la herramienta `pg_dump`. También se incluyen instrucciones para automatizar el proceso con un script en Bash y programarlo con `cron`.
