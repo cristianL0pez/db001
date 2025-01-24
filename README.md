@@ -55,6 +55,17 @@ CREATE TABLE relaciones (
     UNIQUE (seguidor_id, seguido_id) -- Evita duplicados
 );
 
+CREATE TABLE  likes (
+	id serial primary key,
+	usuario_id INT not null,
+	publicacion_id int not null,
+	comentario_id int not null,
+	fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+	CONSTRAINT fk_usuario FOREIGN KEY (usuario_id) references usuarios (id) ON DELETE CASCADE,
+	CONSTRAINT fk_publicacion FOREIGN KEY (publicacion_id) REFERENCES publicaciones (id) ON DELETE CASCADE,
+    CONSTRAINT fk_comentario FOREIGN KEY (comentario_id) REFERENCES comentarios (id) ON DELETE CASCADE
+);
+
 ```
 
 ---
