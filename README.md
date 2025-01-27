@@ -123,5 +123,5 @@ docker-compose up -d --build
 
 links importantes (contenidos a revisar):
 documentacion de fastapi: "https://fastapi.tiangolo.com/"
-codelytv canal de programacion: "https://www.youtube.com/@CodelyTV"\
+codelytv canal de programacion: "https://www.youtube.com/@CodelyTV\"
 curso de sql : "https://www.youtube.com/watch?v=uUdKAYl-F7g&t=1667s&ab_channel=HolaMundo"
