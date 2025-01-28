@@ -124,17 +124,10 @@ docker-compose up -d --build
 
 ---
 levantar grafana con docker 
--- `docker run -d -p 3000:3000 --name=grafana grafana/grafana-oss`
-usuario : admin
-password: admin
-
+ `docker run -d -p 3000:3000 --name=grafana grafana/grafana-oss`
+    -usuario : admin
+    -password: admin
 ---
-
-
-
----
-
-
 ## Links Importantes (Contenidos a Revisar)
 
 - **Documentación de FastAPI**: [FastAPI](https://fastapi.tiangolo.com/)  
