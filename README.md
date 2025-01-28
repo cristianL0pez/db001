@@ -123,7 +123,7 @@ docker-compose up -d --build
 ---
 
 ---
-- ##levantar grafana con docker 
+##levantar grafana con docker 
 `docker run -d -p 3000:3000 --name=grafana grafana/grafana-oss`
  -    -usuario : admin
  -    -password: admin
