@@ -119,9 +119,25 @@ docker-compose up -d --build
 - **Despliegue:**
   - Contenedor de Docker para simplificar el entorno de desarrollo y producción.
 
+
 ---
 
-links importantes (contenidos a revisar):
-documentacion de fastapi: "https://fastapi.tiangolo.com/"
-codelytv canal de programacion: "https://www.youtube.com/@CodelyTV/"
-curso de sql : "https://www.youtube.com/watch?v=uUdKAYl-F7g&t=1667s&ab_channel=HolaMundo"
+---
+levantar grafana con docker 
+-- `docker run -d -p 3000:3000 --name=grafana grafana/grafana-oss`
+usuario : admin
+password: admin
+
+---
+
+
+
+---
+
+
+## Links Importantes (Contenidos a Revisar)
+
+- **Documentación de FastAPI**: [FastAPI](https://fastapi.tiangolo.com/)  
+- **Canal de Programación CodelyTV**: [CodelyTV en YouTube](https://www.youtube.com/@CodelyTV/)  
+- **Curso de SQL**: [Curso de SQL - Hola Mundo](https://www.youtube.com/watch?v=uUdKAYl-F7g&t=1667s&ab_channel=HolaMundo)  
+- **Grafana**: [Grafana - Página Oficial](https://grafana.com/)
